@@ -29,7 +29,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #07beff;
   text-decoration: none;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .title {
-  margin: 0;
+  margin: 0 0 1rem;
   line-height: 1.15;
   font-size: 4rem;
 }
@@ -51,9 +51,10 @@
 }
 
 .description {
-  margin: 4rem 0;
+  margin: .5rem 0;
+  max-width: 640px;
   line-height: 1.5;
-  font-size: 1.5rem;
+  color: #666;
 }
 
 .code {
@@ -70,7 +71,8 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 840px;
+  margin-top: 1rem;
+  max-width: 1080px;
   padding: 0;
   list-style: none;
 }
@@ -84,14 +86,14 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 360px;
+  width: 480px;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+  color: #07beff;
+  border-color: #07beff;
 }
 
 .card h2 {
@@ -99,14 +101,19 @@
   font-size: 1.5rem;
 }
 
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
+.card .url {
+  margin: 1em 0 0;
   line-height: 1.5;
+  font-size: .8rem;
+  color: #666;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card img, .card video, .card audio {
-  max-width: 100%;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
@@ -115,6 +122,7 @@
     flex-direction: column;
   }
   .card {
-
+    width: 100%;
+    margin: 1rem 0;
   }
 }

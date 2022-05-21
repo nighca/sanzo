@@ -38,12 +38,21 @@ function withNode(
   node: string,
   init?: RequestInit
 ) {
-  const url = new URL(originalReq.url)
-  url.hostname = node
-  return new Request(url.href, {
-    ...originalReq,
+  const {
+    cache, credentials, headers, integrity, method,
+    mode, redirect, referrer, referrerPolicy, body,
+    url: originalUrl
+  } = originalReq
+  const urlObject = new URL(originalUrl)
+  urlObject.hostname = node
+  const req = new Request(urlObject.href, {
+    mode: 'cors',
+    credentials: 'omit',
+    cache, integrity, method, redirect,
+    referrer, referrerPolicy, headers, body,
     ...init
   })
+  return req
 }
 
 /** Check if node available */
@@ -55,16 +64,12 @@ async function checkNode(node: string, req: Request) {
 
 /** Retrieve resource content from our nodes */
 async function retrieveFromNodes(request: Request) {
-  console.time('retrieve')
   const nodes = await resolveNodes(request.url)
-  console.timeLog('retrieve', 'resolved:', nodes)
   const node = await Promise.any(nodes.map(
     // TODO: abort pending requests
     node => checkNode(node, request)
   ))
-  console.timeLog('retrieve', 'respondWith:', node)
   const newReq = withNode(request, node)
   const resp = await fetch(newReq)
-  console.timeEnd('retrieve')
   return resp
 }
