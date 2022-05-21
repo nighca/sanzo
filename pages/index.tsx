@@ -33,19 +33,19 @@ const Home: NextPage = () => {
             <h2>Image</h2>
             <img
               alt="Fabric"
-              src="https://statics-file.qiniu.io/sanzo/samples/fabric.jpg"
+              src="https://sanzo.io/sanzo/samples/fabric.jpg"
             />
           </li>
 
-          {/* <li className={styles.card}>
+          <li className={styles.card}>
             <h2>Video</h2>
-            <video controls src="https://statics-file.qiniu.io/sanzo/samples/window.mp4"></video>
+            <video controls src="https://sanzo.io/sanzo/samples/window.mp4"></video>
           </li>
 
           <li className={styles.card}>
             <h2>Audio</h2>
-            <audio controls src="https://statics-file.qiniu.io/sanzo/samples/ukulele.mp3"></audio>
-          </li> */}
+            <audio controls src="https://sanzo.io/sanzo/samples/ukulele.mp3"></audio>
+          </li>
 
         </ul>
       </main>

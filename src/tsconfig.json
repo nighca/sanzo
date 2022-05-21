@@ -4,9 +4,9 @@
     "target": "es5",
     "lib": ["esnext", "WebWorker"],
     "isolatedModules": false,
-    "outDir": ".",
+    "outDir": "../public",
     "typeRoots": []
   },
-  "include": ["sw.ts"],
+  "include": ["./*.ts"],
   "exclude": []
 }
