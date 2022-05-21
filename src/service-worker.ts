@@ -4,10 +4,8 @@ const targetHost = 'sanzo.io'
 
 scope.addEventListener('fetch', async (event: FetchEvent) => {
   const { request } = event
-  console.debug('fetch:', request.url)
 
   if (!shouldRetrieveFromNodes(request)) {
-    console.debug('bythrough:', request.url)
     event.respondWith(fetch(event.request))
     return
   }
