@@ -41,7 +41,7 @@ function useServiceWorker() {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const registered = useServiceWorker()
-  if (!registered) return null
+  if (!registered) return 'service worker registering...'
   return <Component {...pageProps} />
 }
 

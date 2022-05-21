@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "none",
-    "target": "es2020",
+    "target": "es2015",
     "lib": ["esnext", "WebWorker"],
     "isolatedModules": false,
     "outDir": "../public",
