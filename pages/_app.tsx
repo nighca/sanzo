@@ -16,32 +16,34 @@ function useEffectOnce(fn: EffectCallback) {
 function useServiceWorker() {
 
   const [registered, setRegistered] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffectOnce(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/service-worker.js').then(
-          function (registration) {
-            console.log(
-              'Service Worker registration successful with scope: ',
-              registration.scope
-            )
-            setRegistered(true)
-          },
-          function (err) {
-            console.log('Service Worker registration failed: ', err)
-          }
-        )
-      })
+    if (!('serviceWorker' in navigator)) {
+      setError('Your browser does not support Service Worker.')
+      return
     }
+    navigator.serviceWorker.register('/service-worker.js').then(
+      registration => {
+        console.debug(
+          'Service Worker registration successful with scope: ',
+          registration.scope
+        )
+        setRegistered(true)
+      },
+      err => {
+        setError(`Service Worker registration failed: ${err}.`)
+      }
+    )
   })
 
-  return registered
+  return { registered, error }
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const registered = useServiceWorker()
-  if (!registered) return 'service worker registering...'
+  const { registered, error } = useServiceWorker()
+  if (error != null) return error
+  if (!registered) return 'Service Worker registering...'
   return <Component {...pageProps} />
 }
 
