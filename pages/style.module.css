@@ -70,7 +70,9 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 800px;
+  max-width: 840px;
+  padding: 0;
+  list-style: none;
 }
 
 .card {
@@ -82,7 +84,7 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+  max-width: 360px;
 }
 
 .card:hover,
@@ -103,14 +105,16 @@
   line-height: 1.5;
 }
 
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
+.card img, .card video, .card audio {
+  max-width: 100%;
 }
 
 @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+  .card {
+
   }
 }

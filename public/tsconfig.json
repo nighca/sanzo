@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "none",
+    "target": "es5",
+    "lib": ["esnext", "WebWorker"],
+    "isolatedModules": false,
+    "outDir": ".",
+    "typeRoots": []
+  },
+  "include": ["sw.ts"],
+  "exclude": []
+}
