@@ -17,19 +17,10 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <h1 className={styles.title}>
           Sanzo
-          <iframe
-            src="https://ghbtns.com/github-btn.html?user=nighca&repo=sanzo&type=star"
-            frameBorder="0"
-            scrolling="0"
-            width="50"
-            height="20"
-            title="GitHub"
-            style={{ marginLeft: '1rem' }}
-          ></iframe>
         </h1>
 
         <p className={styles.description}>
-          Sanzo is a demo for customized resource retrieval based on&nbsp;
+          <a href="https://github.com/nighca/sanzo">Sanzo</a> is a demo for customized resource retrieval based on&nbsp;
           <a
             target="_blank"
             rel="noreferrer"
