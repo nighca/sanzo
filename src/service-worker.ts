@@ -81,8 +81,9 @@ async function checkNode(node: string, req: Request) {
 
 /** Get a readable summary of blob, for debug purpose. */
 async function summaryOfBlob(blob: Blob) {
-  const prefix = new Uint8Array(await blob.slice(0, 10).arrayBuffer()).toString()
-  return `[]${blob.size}{${prefix}...}`
+  const start = new Uint8Array(await blob.slice(0, 5).arrayBuffer()).toString()
+  const end = new Uint8Array(await blob.slice(blob.size - 5, blob.size).arrayBuffer()).toString()
+  return `[]${blob.size}{${start},...,${end}}`
 }
 
 /** Retrieve resource content from our nodes */
@@ -294,25 +295,23 @@ async function createPartialResponse(cacheItem: CacheItem, range: Range) {
   if (size == null) {
     throw new Error('Invalid size in Content-Range')
   }
-  const { start: originalStart } = normalizeContentRange(contentRange, size)
+  const { start: offset } = normalizeContentRange(contentRange, size)
   const { start, end } = normalizeRange(range, size)
 
-  const slicedBlob = originalBlob.slice(start - originalStart, end - originalStart)
-  const slicedBlobSize = slicedBlob.size
+  const slicedBlob = originalBlob.slice(start - offset, end - offset)
+
+  const slicedHeaders = new Headers(cacheItem.headers)
+  slicedHeaders.set('Accept-Ranges', 'bytes')
+  slicedHeaders.set('Content-Length', String(slicedBlob.size))
+  slicedHeaders.set('Content-Range', `bytes ${start}-${end - 1}/${size}`)
+  slicedHeaders.set('X-Service-Worker', 'sliced')
 
   const slicedResponse = new Response(slicedBlob, {
-    // Status code 206 is for a Partial Content response.
-    // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/206
     status: 206,
     statusText: 'Partial Content',
-    headers: cacheItem.headers
+    headers: slicedHeaders
   })
 
-  slicedResponse.headers.set('Content-Length', String(slicedBlobSize))
-  slicedResponse.headers.set(
-    'Content-Range',
-    `bytes ${start}-${end - 1}/${slicedBlobSize}`
-  )
   return slicedResponse
 }
 
