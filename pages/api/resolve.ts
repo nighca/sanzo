@@ -8,7 +8,8 @@ export default function handler(
 ) {
   res.status(200).json([
     // '127.1.1.1',    // not ok
-    '45.78.11.27',  // not ok
-    'opmna640q.qnssl.com'
+    // '45.78.11.27',  // not ok
+    // 'opmna640q.qnssl.com'
+    'cdn-static-file.qiniu.io'
   ])
 }

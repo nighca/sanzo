@@ -3,7 +3,8 @@ import Head from 'next/head'
 import styles from './style.module.css'
 
 const originalHost = 'sanzo.io'
-const targetHost = 'opmna640q.qnssl.com'
+// const targetHost = 'opmna640q.qnssl.com'
+const targetHost = 'cdn-static-file.qiniu.io'
 
 const Home: NextPage = () => {
   return (
@@ -68,8 +69,8 @@ const Home: NextPage = () => {
 }
 
 function UrlInfo({ path }: { path: string }) {
-  const originalUrl = `https://${originalHost}/${path}`
-  const newUrl = `https://${targetHost}/${path}`
+  const originalUrl = `https://${originalHost}${path}`
+  const newUrl = `https://${targetHost}${path}`
   return (
     <p className={styles.url}>
       <a target="_blank" rel="noreferrer" href={originalUrl}><code>{originalHost}</code></a>&nbsp;
