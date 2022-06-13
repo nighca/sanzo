@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:service-worker": "npx tsc -p src --watch",
+    "dev:service-worker": "tsc -p src --watch",
     "dev": "next dev",
-    "build": "next build && npx tsc -p src",
+    "build": "next build && tsc -p src",
     "start": "next start",
     "lint": "next lint"
   },

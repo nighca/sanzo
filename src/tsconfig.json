@@ -5,7 +5,8 @@
     "lib": ["esnext", "WebWorker"],
     "isolatedModules": false,
     "outDir": "../public",
-    "typeRoots": []
+    "typeRoots": [],
+    "strict": true
   },
   "include": ["./*.ts"],
   "exclude": []
