@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 
 	webrtc "github.com/pion/webrtc/v3"
 )
+
+var api *webrtc.API
 
 type CommandRequest struct {
 	Id  string `json:"id"`
@@ -28,17 +31,17 @@ var (
 
 func newConnection(offer *webrtc.SessionDescription) (answer *webrtc.SessionDescription, err error) {
 	config := webrtc.Configuration{
-		ICEServers: []webrtc.ICEServer{
-			{
-				URLs: []string{"stun:stun.l.google.com:19302"},
-			},
-		},
+		// ICEServers: []webrtc.ICEServer{
+		// 	{
+		// 		URLs: []string{"stun:stun.l.google.com:19302"},
+		// 	},
+		// },
 	}
 
 	fmt.Println("NewPeerConnection")
 
 	// Create a new RTCPeerConnection
-	peerConnection, err := webrtc.NewPeerConnection(config)
+	peerConnection, err := api.NewPeerConnection(config)
 	if err != nil {
 		return
 	}
@@ -218,6 +221,33 @@ func runSignalServer() {
 	http.ListenAndServe(":8000", nil)
 }
 
+func initWebRTCAPI() {
+	// Listen on UDP Port 8443, will be used for all WebRTC traffic
+	udpListener, err := net.ListenUDP("udp", &net.UDPAddr{
+		IP:   net.IP{0, 0, 0, 0},
+		Port: 8443,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Listening for WebRTC traffic at %s\n", udpListener.LocalAddr())
+
+	// Create a SettingEngine, this allows non-standard WebRTC behavior
+	settingEngine := webrtc.SettingEngine{}
+
+	// Configure our SettingEngine to use our UDPMux. By default a PeerConnection has
+	// no global state. The API+SettingEngine allows the user to share state between them.
+	// In this case we are sharing our listening port across many.
+	settingEngine.SetICEUDPMux(webrtc.NewICEUDPMux(nil, udpListener))
+
+	settingEngine.SetLite(true)
+
+	// Create a new API using our SettingEngine
+	api = webrtc.NewAPI(webrtc.WithSettingEngine(settingEngine))
+}
+
 func main() {
+	initWebRTCAPI()
 	runSignalServer()
 }
