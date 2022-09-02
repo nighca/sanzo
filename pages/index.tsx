@@ -40,10 +40,6 @@ const Home: NextPage = () => {
           </a>.
         </p>
 
-        <p className={styles.description}>
-          Resources below are expected to be retrieved from site <code>{originalHost}</code>, which does not exist. Instead they are retrieved from site <code>{targetHost}</code> under the hood.
-        </p>
-
         <ul className={styles.grid}>
 
           <li className={styles.card}>
