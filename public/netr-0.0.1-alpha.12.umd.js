@@ -1475,50 +1475,56 @@ var __async = (__this, __arguments, generator) => {
     }
     getResolveResult(ctx, domain) {
       return __async(this, null, function* () {
-        var _a, _b, _c;
         const fromCache = this.cache.get(domain);
-        if (fromCache != null && fromCache.expireAt > Date.now()) {
-          ctx.set("dnsResolveFromCache", true);
-          return fromCache;
+        if (fromCache != null) {
+          const result = yield fromCache;
+          if (result.expireAt > Date.now()) {
+            ctx.set("dnsResolveFromCache", true);
+            return fromCache;
+          }
         }
-        const startAt = Date.now();
-        let err;
-        try {
-          const resolved = yield this.dnsResolver(ctx, domain);
-          const toSave = __spreadProps(__spreadValues({}, resolved), {
-            groups: resolved.groups.map((g) => __spreadProps(__spreadValues({}, g), {
-              duration: this.initialDuration,
-              after: 0
-            })),
-            expireAt: Date.now() + resolved.ttl * 1e3
-          });
-          toSave.groups.forEach((g) => {
-            g.elts.forEach((e) => {
-              e.ips.forEach((ipPort) => {
-                this.fingerprints.set(ipPort, e.fingerprint);
+        const promise = (() => __async(this, null, function* () {
+          var _a, _b, _c;
+          const startAt = Date.now();
+          let err;
+          try {
+            const resolved = yield this.dnsResolver(ctx, domain);
+            const toSave = __spreadProps(__spreadValues({}, resolved), {
+              groups: resolved.groups.map((g) => __spreadProps(__spreadValues({}, g), {
+                duration: this.initialDuration,
+                after: 0
+              })),
+              expireAt: Date.now() + resolved.ttl * 1e3
+            });
+            toSave.groups.forEach((g) => {
+              g.elts.forEach((e) => {
+                e.ips.forEach((ipPort) => {
+                  this.fingerprints.set(ipPort, e.fingerprint);
+                });
               });
             });
-          });
-          this.cache.set(domain, toSave);
-          return toSave;
-        } catch (e) {
-          err = e;
-          throw e;
-        } finally {
-          const totalTime = (Date.now() - startAt) / 1e3;
-          this.logger.log("DnsResolveLog", {
-            r_id: (_a = ctx.get("dnsResolveReqID")) != null ? _a : "",
-            loc: "",
-            ip: "",
-            domain,
-            status_code: (_b = ctx.get("dnsResolveStatus")) != null ? _b : -1,
-            err_msg: err instanceof Error ? err.name : "Unknown",
-            err_desc: err instanceof Error ? err.message : err + "",
-            t_conn: (_c = ctx.get("dnsResolveConnectionTime")) != null ? _c : -1,
-            t_total: totalTime
-          });
-          ctx.set("dnsResolveTotalTime", totalTime);
-        }
+            return toSave;
+          } catch (e) {
+            err = e;
+            throw e;
+          } finally {
+            const totalTime = (Date.now() - startAt) / 1e3;
+            this.logger.log("DnsResolveLog", {
+              r_id: (_a = ctx.get("dnsResolveReqID")) != null ? _a : "",
+              loc: "",
+              ip: "",
+              domain,
+              status_code: (_b = ctx.get("dnsResolveStatus")) != null ? _b : -1,
+              err_msg: err instanceof Error ? err.name : "Unknown",
+              err_desc: err instanceof Error ? err.message : err + "",
+              t_conn: (_c = ctx.get("dnsResolveConnectionTime")) != null ? _c : -1,
+              t_total: totalTime
+            });
+            ctx.set("dnsResolveTotalTime", totalTime);
+          }
+        }))();
+        this.cache.set(domain, promise);
+        return promise;
       });
     }
     resolve(ctx, domain) {

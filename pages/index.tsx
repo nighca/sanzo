@@ -7,7 +7,7 @@ const originalHost = 'sanzo.io'
 const targetHost = 'opmna640q.qnssl.com'
 
 const nertInitScriptContent = `
-netr.initProxy('/sw-0.0.1-alpha.11.umd.js', {
+netr.initProxy('/sw-0.0.1-alpha.12.umd.js', {
   app: { appID: 'id', appSalt: 'salt' },
   domains: ['qiniucdn-sdk.qbox.net']
 })
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
         <title>Sanzo</title>
         <meta name="description" content="Sanzo is a demo for customized resource retrieval based on Service Worker API." />
         <link rel="icon" href="/favicon.ico" />
-        <script src="/netr-0.0.1-alpha.11.umd.js" />
+        <script src="/netr-0.0.1-alpha.12.umd.js" />
         <script dangerouslySetInnerHTML={{ __html: nertInitScriptContent }} />
       </Head>
 
