@@ -1583,15 +1583,6 @@ var __async = (__this, __arguments, generator) => {
     }
     return items[0];
   }
-  function randomText(length) {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-    const charNum = chars.length;
-    let text = "";
-    for (let i = 0; i < length; i++) {
-      text += chars[Math.floor(Math.random() * charNum)];
-    }
-    return text;
-  }
   const defaultConfig = {
     size: 99999
   };
@@ -2839,25 +2830,7 @@ var __async = (__this, __arguments, generator) => {
   const logger = {
     log: () => void 0
   };
-  const mockResolver = () => __async(this, null, function* () {
-    return {
-      groups: [
-        {
-          elts: [
-            {
-              id: randomText(10),
-              ips: ["10.202.18.253:2200"],
-              fingerprint: "f0:63:f1:e5:e2:14:b8:0f:f7:6c:2a:5a:f6:a2:bd:b8:9f:c7:4a:1e:cf:e1:9b:d1:d1:63:62:fc:5c:56:c7:da",
-              replicas: 40
-            }
-          ],
-          weight: 50
-        }
-      ],
-      ttl: 1
-    };
-  });
-  const resolver = new Resolver(logger, mockResolver);
+  const resolver = new Resolver(logger);
   const getFingerprint = (ipPort) => resolver.getFingerprint(ipPort);
   const client = new Client(config.app, __spreadProps(__spreadValues({}, config.client), {
     logger,
