@@ -1,9 +1,17 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from './style.module.css'
 
 const originalHost = 'sanzo.io'
 const targetHost = 'opmna640q.qnssl.com'
+
+const nertInitScriptContent = `
+netr.initProxy('/sw-0.0.1-alpha.10.umd.js', {
+  app: { appID: 'id', appSalt: 'salt' },
+  domains: ['qiniucdn-sdk.qbox.net']
+})
+`
 
 const Home: NextPage = () => {
   return (
@@ -12,6 +20,8 @@ const Home: NextPage = () => {
         <title>Sanzo</title>
         <meta name="description" content="Sanzo is a demo for customized resource retrieval based on Service Worker API." />
         <link rel="icon" href="/favicon.ico" />
+        <script src="/netr-0.0.1-alpha.10.umd.js" />
+        <script dangerouslySetInnerHTML={{ __html: nertInitScriptContent }} />
       </Head>
 
       <main className={styles.main}>
@@ -38,27 +48,24 @@ const Home: NextPage = () => {
 
           <li className={styles.card}>
             <h2>Image</h2>
-            <img alt="Fabric" src="https://sanzo.io/sanzo/samples/fabric.jpg" />
-            <UrlInfo path='/sanzo/samples/fabric.jpg' />
+            <img alt="Fabric" src="https://qiniucdn-sdk.qbox.net/sample/fabric.jpeg" />
           </li>
 
           <li className={styles.card}>
             <h2>Video</h2>
-            <video controls src="https://sanzo.io/sanzo/samples/forest.mp4"></video>
-            <UrlInfo path='/sanzo/samples/forest.mp4' />
+            <video controls src="https://qiniucdn-sdk.qbox.net/sample/forest.mp4"></video>
           </li>
 
           <li className={styles.card}>
             <h2>Audio</h2>
-            <audio controls src="https://sanzo.io/sanzo/samples/ukulele.mp3"></audio>
-            <UrlInfo path='/sanzo/samples/ukulele.mp3' />
+            <audio controls src="https://qiniucdn-sdk.qbox.net/sample/ukulele.mp3"></audio>
           </li>
 
-          <li className={styles.card}>
+          {/* <li className={styles.card}>
             <h2>Long Video</h2>
             <video controls src="https://sanzo.io/sanzo/samples/the-internets-own-boy.ogv"></video>
             <UrlInfo path='/sanzo/samples/the-internets-own-boy.ogv' />
-          </li>
+          </li> */}
 
         </ul>
 

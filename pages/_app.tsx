@@ -41,9 +41,9 @@ function useServiceWorker() {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { registered, error } = useServiceWorker()
-  if (error != null) return error
-  if (!registered) return 'Service Worker registering...'
+  // const { registered, error } = useServiceWorker()
+  // if (error != null) return error
+  // if (!registered) return 'Service Worker registering...'
   return <Component {...pageProps} />
 }
 
